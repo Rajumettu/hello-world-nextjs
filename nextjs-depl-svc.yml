@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: next-js
+spec:
+  selector:
+    matchLabels:
+      app: next-js
+  template:
+    metadata:
+      labels:
+        app: next-js
+    spec:
+      containers:
+      - name: next-js
+        image: build_no
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "800m"
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: next-js
+  name: next-js-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: next-js
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
